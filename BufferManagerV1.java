@@ -20,6 +20,8 @@ public class BufferManagerV1<T> implements BufferManager<T> {
 
 		elements = (T[]) new Object[capacity]; // Array wird erstellt
 	}// constructor()
+	
+	
 
 	@Override
 	public synchronized void insert(final T data) throws InterruptedException { // Mit synchronized wird sichergestellt, das nicht mehrere Threads die Methode in der selben Zeit durchlaufen.
@@ -27,9 +29,9 @@ public class BufferManagerV1<T> implements BufferManager<T> {
 			wait();
 		}
 		
-		elements[position] = data; // Datei in Array hinzufügen (Position = Offset)
-		position = (position + 1) % elements.length; // position wird dadurch nicht größer elements.length
-		++elementCounter; // Counter wird hochgezählt
+		elements[position] = data; // Datei in Array hinzufÃ¼gen (Position = Offset)
+		position = (position + 1) % elements.length; // position wird dadurch nicht grÃ¶ÃŸer elements.length
+		++elementCounter; // Counter wird hochgezÃ¤hlt
 		notifyAll(); // Threads benachrichtigt
 	}// method()
 
@@ -38,8 +40,8 @@ public class BufferManagerV1<T> implements BufferManager<T> {
 		while (elementCounter == 0) { // Warten, wenn keine Datei im Array ist.
 			wait();
 		}
-		T result = elements[(position + getRemainingCapacity()) % getCapacity()]; // Gibt eine Datei zurück (Reihenfolge wird beachtet)
-		--elementCounter; // Counter wird runtergezählt
+		T result = elements[(position + getRemainingCapacity()) % getCapacity()]; // Gibt eine Datei zurÃ¼ck (Reihenfolge wird beachtet)
+		--elementCounter; // Counter wird runtergezÃ¤hlt
 		notifyAll(); // Threads benachrichtigt
 		return result;
 	}// method()
